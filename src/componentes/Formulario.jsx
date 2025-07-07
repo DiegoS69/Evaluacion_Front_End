@@ -18,9 +18,23 @@ const Formulario = ({ agregarBeneficiario, beneficiarioEditando, actualizarBenef
     }
   }, [beneficiarioEditando]);
 
+  const validar = () => {
+  const nuevosErrores = {};
+  if (!nombre.trim()) nuevosErrores.nombre = 'El nombre es obligatorio';
+  if (!edad || isNaN(edad) || edad <= 0) nuevosErrores.edad = 'Edad inválida';
+  if (!fechaIngreso) nuevosErrores.fechaIngreso = 'Debe ingresar una fecha';
+  if (!tipoAyuda) nuevosErrores.tipoAyuda = 'Debe seleccionar una ayuda';
+  if (!observaciones.trim()) nuevosErrores.observaciones = 'Campo obligatorio';
+
+  setErrores(nuevosErrores);
+  return Object.keys(nuevosErrores).length === 0;
+  };
+
+
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if (!validar()) return;
+    
     const datos = {
       id: beneficiarioEditando ? beneficiarioEditando.id : Date.now(),
       nombre,
